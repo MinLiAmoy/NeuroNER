@@ -391,7 +391,8 @@ class NeuroNER(object):
                 y_pred, y_true, output_filepaths = train.predict_labels(sess, model, transition_params_trained, parameters, dataset, epoch_number, stats_graph_folder, dataset_filepaths)
 
                 # Evaluate model: save and plot results
-                evaluate.evaluate_model(results, dataset, y_pred, y_true, stats_graph_folder, epoch_number, epoch_start_time, output_filepaths, parameters)
+                if epoch_number >= 1:
+                    evaluate.evaluate_model(results, dataset, y_pred, y_true, stats_graph_folder, epoch_number, epoch_start_time, output_filepaths, parameters)
 
                 if parameters['use_pretrained_model'] and not parameters['train_model']:
                     conll_to_brat.output_brat(output_filepaths, dataset_brat_folders, stats_graph_folder)
