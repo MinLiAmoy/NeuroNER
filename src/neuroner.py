@@ -409,7 +409,7 @@ class NeuroNER(object):
 
 
                 # Early stop
-                if epoch >= 1:
+                if epoch_number >= 1:
                     valid_f1_score = results['epoch'][epoch_number][0]['valid']['f1_score']['micro']
                     if  valid_f1_score > previous_best_valid_f1_score:
                         bad_counter = 0
