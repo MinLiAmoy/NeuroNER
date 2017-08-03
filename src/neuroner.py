@@ -409,22 +409,23 @@ class NeuroNER(object):
 
 
                 # Early stop
-                valid_f1_score = results['epoch'][epoch_number][0]['valid']['f1_score']['micro']
-                if  valid_f1_score > previous_best_valid_f1_score:
-                    bad_counter = 0
-                    previous_best_valid_f1_score = valid_f1_score
-                    conll_to_brat.output_brat(output_filepaths, dataset_brat_folders, stats_graph_folder, overwrite=True)
-                    self.transition_params_trained = transition_params_trained
-                else:
-                    bad_counter += 1
-                print("The last {0} epochs have not shown improvements on the validation set.".format(bad_counter))
+                if epoch >= 1:
+                    valid_f1_score = results['epoch'][epoch_number][0]['valid']['f1_score']['micro']
+                    if  valid_f1_score > previous_best_valid_f1_score:
+                        bad_counter = 0
+                        previous_best_valid_f1_score = valid_f1_score
+                        conll_to_brat.output_brat(output_filepaths, dataset_brat_folders, stats_graph_folder, overwrite=True)
+                        self.transition_params_trained = transition_params_trained
+                    else:
+                        bad_counter += 1
+                    print("The last {0} epochs have not shown improvements on the validation set.".format(bad_counter))
 
-                if bad_counter >= parameters['patience']:
-                    print('Early Stop!')
-                    results['execution_details']['early_stop'] = True
-                    break
+                    if bad_counter >= parameters['patience']:
+                        print('Early Stop!')
+                        results['execution_details']['early_stop'] = True
+                        break
 
-                if epoch_number >= parameters['maximum_number_of_epochs']: break
+                    if epoch_number >= parameters['maximum_number_of_epochs']: break
 
 
         except KeyboardInterrupt:
